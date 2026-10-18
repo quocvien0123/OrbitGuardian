@@ -10,6 +10,7 @@ public class HUDController : MonoBehaviour
     [SerializeField] private TMP_Text killsText;
     [SerializeField] private TMP_Text aimModeText;
     [SerializeField] private Image dashCooldownFill;
+    [SerializeField] private Image autoAimCooldownFill;
     [Tooltip("Icon mạng, theo thứ tự từ trái sang phải")]
     [SerializeField] private Image[] lifeIcons;
     [SerializeField] private PlayerHealth playerHealth;
@@ -67,11 +68,25 @@ public class HUDController : MonoBehaviour
         if (playerAim != null) playerAim.AimModeChanged -= OnAimModeChanged;
     }
 
-    // Ngoại lệ duy nhất đọc mỗi frame: thanh hồi chiêu lướt.
+    // Ngoại lệ duy nhất đọc mỗi frame: thanh hồi chiêu lướt và tự ngắm (Q).
     private void Update()
     {
         if (dashCooldownFill != null && playerMovement != null)
             dashCooldownFill.fillAmount = 1f - playerMovement.DashCooldownNormalized;
+
+        if (autoAimCooldownFill != null && playerAim != null)
+        {
+            if (playerAim.IsAutoAim)
+            {
+                autoAimCooldownFill.fillAmount = playerAim.AutoAimDuration > 0f
+                    ? Mathf.Clamp01(playerAim.AutoAimDurationRemaining / playerAim.AutoAimDuration)
+                    : 0f;
+            }
+            else
+            {
+                autoAimCooldownFill.fillAmount = 1f - playerAim.AutoAimCooldownNormalized;
+            }
+        }
     }
 
     private void OnScoreChanged(int score)

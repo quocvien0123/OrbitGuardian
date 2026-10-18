@@ -26,6 +26,8 @@ public class PlayerAim : MonoBehaviour
 
     public bool IsAutoAim { get; private set; }
     public Targetable CurrentTarget { get; private set; }
+    public float AutoAimDuration => autoAimDuration;
+    public float AutoAimCooldown => autoAimCooldown;
     public float AutoAimDurationRemaining => durationTimer;
     public float AutoAimCooldownRemaining => cooldownTimer;
     /// <summary>1 = vừa hết tự ngắm (bắt đầu hồi chiêu), 0 = sẵn sàng.</summary>
