@@ -938,7 +938,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83ac9d8294a3d864f9b28b5d3f500193, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LootManager
-  powerUpPrefabs: []
+  powerUpPrefabs:
+  - {fileID: 1983059033356879598, guid: 6f71fcee34c796e45bce8500134a3893, type: 3}
+  - {fileID: 8418289108698569548, guid: b5b8026dbe3d8db43a7e2592831c588e, type: 3}
+  - {fileID: 3389213176387683451, guid: 362c60a0f2902f2459ae3924b05277cf, type: 3}
 --- !u!114 &1095606086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1159,10 +1162,6 @@ PrefabInstance:
     - target: {fileID: 1373002689063416628, guid: b71a224d74774834aa8f940543635950, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2997910956246954583, guid: b71a224d74774834aa8f940543635950, type: 3}
-      propertyPath: toggleVolume
-      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 6864429981186568181, guid: b71a224d74774834aa8f940543635950, type: 3}
       propertyPath: m_Name

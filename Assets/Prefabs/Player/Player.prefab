@@ -253,6 +253,7 @@ GameObject:
   - component: {fileID: 2997910956246954583}
   - component: {fileID: 8477050421435634058}
   - component: {fileID: 1484190119502247042}
+  - component: {fileID: 8407141752375911316}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -442,7 +443,7 @@ MonoBehaviour:
   autoAimCooldown: 5
   toggleSfx: {fileID: 8300000, guid: 66ac52d787e006a4bae6ece85f44f569, type: 3}
   deactivateSfx: {fileID: 8300000, guid: efefab709f9c00641ae10e23728ce032, type: 3}
-  toggleVolume: 0.2
+  toggleVolume: 0.1
 --- !u!114 &8477050421435634058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -480,3 +481,16 @@ MonoBehaviour:
   shieldVisual: {fileID: 4104807378551383707}
   hitSfx: {fileID: 8300000, guid: e155383ecf5ea4c48aefc4a3b35dc122, type: 3}
   deathSfx: {fileID: 8300000, guid: 9959dbc93c91fb44e926f783f2f766e5, type: 3}
+--- !u!114 &8407141752375911316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6864429981186568181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e218bdcf8e1c2884a9b10b71351f9f62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerPowerUps
+  effectDuration: 8
