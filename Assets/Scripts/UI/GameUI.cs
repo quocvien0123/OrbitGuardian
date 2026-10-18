@@ -41,12 +41,12 @@ public class GameUI : MonoBehaviour
         GameManager gm = GameManager.Instance;
         if (state == GameState.GameOver)
         {
-            if (gameOverScoreText != null) gameOverScoreText.text = "ĐIỂM: " + gm.Score;
+            if (gameOverScoreText != null) gameOverScoreText.text = "SCORE: " + gm.Score;
             SetActive(gameOverNewRecordLabel, gm.IsNewHighScore);
         }
         else if (state == GameState.Victory)
         {
-            if (victoryScoreText != null) victoryScoreText.text = "ĐIỂM: " + gm.Score;
+            if (victoryScoreText != null) victoryScoreText.text = "SCORE: " + gm.Score;
             SetActive(victoryNewRecordLabel, gm.IsNewHighScore);
         }
     }

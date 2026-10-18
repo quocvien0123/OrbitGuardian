@@ -16,7 +16,7 @@ public class MainMenuController : MonoBehaviour
         Cursor.visible = true;
 
         if (highScoreText != null)
-            highScoreText.text = "KỶ LỤC: " + PlayerPrefs.GetInt("HighScore", 0);
+            highScoreText.text = "HIGH SCORE: " + PlayerPrefs.GetInt("HighScore", 0);
         if (creditsPanel != null) creditsPanel.SetActive(false);
     }
 

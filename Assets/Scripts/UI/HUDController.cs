@@ -76,12 +76,12 @@ public class HUDController : MonoBehaviour
 
     private void OnScoreChanged(int score)
     {
-        if (scoreText != null) scoreText.text = "ĐIỂM: " + score;
+        if (scoreText != null) scoreText.text = "SCORE: " + score;
     }
 
     private void OnKillsChanged(int kills)
     {
-        if (killsText != null) killsText.text = "HẠ: " + kills;
+        if (killsText != null) killsText.text = "KILLS: " + kills;
     }
 
     /// <summary>Hiển thị mm:ss, làm tròn lên; chỉ cập nhật chữ khi số giây đổi.</summary>
@@ -106,6 +106,6 @@ public class HUDController : MonoBehaviour
     private void OnAimModeChanged(bool isAutoAim)
     {
         if (aimModeText != null)
-            aimModeText.text = isAutoAim ? "NGẮM: TỰ ĐỘNG [Q]" : "NGẮM: CHUỘT [Q]";
+            aimModeText.text = isAutoAim ? "AIM: AUTO [Q]" : "AIM: MANUAL [Q]";
     }
 }
