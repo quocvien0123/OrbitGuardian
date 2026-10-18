@@ -869,6 +869,7 @@ GameObject:
   - component: {fileID: 1095606084}
   - component: {fileID: 1095606085}
   - component: {fileID: 1095606086}
+  - component: {fileID: 1095606087}
   m_Layer: 0
   m_Name: Systems
   m_TagString: Untagged
@@ -926,6 +927,20 @@ MonoBehaviour:
   preload:
   - prefab: {fileID: 3203837530182028629, guid: ed5b3c0871a626a41bae0e35ebca72ef, type: 3}
     count: 40
+  - prefab: {fileID: 6179244379286789525, guid: 82991cb56975e244d9df05db7b253860, type: 3}
+    count: 5
+  - prefab: {fileID: 6809397468670795049, guid: 54876538da473c046b3689b8c0efad2f, type: 3}
+    count: 10
+  - prefab: {fileID: 1643589340354832969, guid: 9ffd25150b2669a4c9d233029483ef8b, type: 3}
+    count: 15
+  - prefab: {fileID: 3627147272227891515, guid: c0e9c4830ecfed54db4342aa6b76d432, type: 3}
+    count: 10
+  - prefab: {fileID: 3203837530182028629, guid: c67c732948bd0404d986d777a7108a4e, type: 3}
+    count: 20
+  - prefab: {fileID: 8043517501016874859, guid: 791af5ae7209b5745b17f968f855ae99, type: 3}
+    count: 10
+  - prefab: {fileID: 3759963584303673179, guid: 4dc9bb102a70d2344ad4065c699068c8, type: 3}
+    count: 5
 --- !u!114 &1095606085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -957,6 +972,20 @@ MonoBehaviour:
   musicSource: {fileID: 28450938}
   sfxSource: {fileID: 882804583}
   musicClip: {fileID: 8300000, guid: 9075770bd8e408342a3809ee1759e00a, type: 3}
+--- !u!114 &1095606087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1095606081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9b910b54c6234b4681de2e00424c5ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnManager
+  config: {fileID: 11400000, guid: 1ac614ed7dabc8441aa5dbee1c46acab, type: 2}
+  startDelay: 1.5
 --- !u!1 &1782225211
 GameObject:
   m_ObjectHideFlags: 0

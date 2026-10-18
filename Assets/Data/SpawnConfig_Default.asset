@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11466081af4845447bd9ffdef16b75b4, type: 3}
+  m_Name: SpawnConfig_Default
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnConfig
+  entries:
+  - label: Asteroid L
+    prefab: {fileID: 6179244379286789525, guid: 82991cb56975e244d9df05db7b253860, type: 3}
+    weight: 3
+    unlockTime: 0
+  - label: Asteroid M
+    prefab: {fileID: 6809397468670795049, guid: 54876538da473c046b3689b8c0efad2f, type: 3}
+    weight: 2
+    unlockTime: 0
+  - label: Diver
+    prefab: {fileID: 3627147272227891515, guid: c0e9c4830ecfed54db4342aa6b76d432, type: 3}
+    weight: 4
+    unlockTime: 0
+  - label: Mine
+    prefab: {fileID: 7419657520318317301, guid: 3c197d80cf6e11e44a96975da0ef6aa0, type: 3}
+    weight: 1
+    unlockTime: 30
+  - label: Gunner
+    prefab: {fileID: 6648903595791583200, guid: 6456f0d9225dae2419f74b5cae6300f3, type: 3}
+    weight: 1.5
+    unlockTime: 60
+  - label: Kamikaze
+    prefab: {fileID: 3325860802045466866, guid: 1178fdd9b7bf5454a8e09ff78327faaa, type: 3}
+    weight: 1.5
+    unlockTime: 90
+  spawnIntervalOverTime:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.4
+      inSlope: 0
+      outSlope: -1.1999999
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 0.8
+      inSlope: -1.1999999
+      outSlope: -1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.85
+      value: 0.45
+      inSlope: -1
+      outSlope: -0.66666675
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.35
+      inSlope: -0.66666675
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  minSpawnMargin: 1.5
+  maxSpawnMargin: 4
+  maxAlive: 45
