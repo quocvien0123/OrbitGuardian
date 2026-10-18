@@ -28,15 +28,15 @@ MonoBehaviour:
   - label: Mine
     prefab: {fileID: 7419657520318317301, guid: 3c197d80cf6e11e44a96975da0ef6aa0, type: 3}
     weight: 1
-    unlockTime: 30
+    unlockTime: 10
   - label: Gunner
     prefab: {fileID: 6648903595791583200, guid: 6456f0d9225dae2419f74b5cae6300f3, type: 3}
     weight: 1.5
-    unlockTime: 60
+    unlockTime: 20
   - label: Kamikaze
     prefab: {fileID: 3325860802045466866, guid: 1178fdd9b7bf5454a8e09ff78327faaa, type: 3}
     weight: 1.5
-    unlockTime: 90
+    unlockTime: 30
   spawnIntervalOverTime:
     serializedVersion: 2
     m_Curve:
@@ -44,34 +44,34 @@ MonoBehaviour:
       time: 0
       value: 1.4
       inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.20416768
+      value: 0.8100098
+      inSlope: -1.1999999
       outSlope: -1.1999999
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.5
-      value: 0.8
-      inSlope: -1.1999999
+      time: 0.36666262
+      value: 0.54750365
+      inSlope: -1
       outSlope: -1
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.85
-      value: 0.45
-      inSlope: -1
-      outSlope: -0.66666675
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 0.35
+      time: 0.5125122
+      value: 0.3449951
       inSlope: -0.66666675
-      outSlope: 0
+      outSlope: -0.66666675
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
