@@ -41,6 +41,7 @@ Mỗi yêu cầu có tiêu chí chấp nhận (✔).
 
 ### Giao diện & âm thanh
 - **FR-21** HUD: điểm, đồng hồ mm:ss, Kills, icon mạng, chế độ ngắm, thanh hồi chiêu lướt.
+- **FR-21b** HUD dùng sprite: tim đầy/rỗng, chữ số sprite, vật phẩm đang dùng có thanh thời lượng.
 - **FR-22** Esc tạm dừng (`Time.timeScale = 0`). Panel Tạm dừng, Game Over, Victory, menu chính, Credits.
 - **FR-23** Âm thanh bắn, nổ, trúng đòn, nhặt vật phẩm, lướt, bật/tắt tự ngắm, nhạc nền. ✔ Để trống clip không gây lỗi.
 
@@ -246,9 +247,9 @@ Ký hiệu: `[SF]` = `[SerializeField] private`. Số trong ngoặc là mặc đ
 
 **`PlayerHealth`** (`Scripts/Player/`, `IDamageable`, singleton `Instance`)
 - `[SF] int maxLives (3)`, `[SF] float invincibleDuration (2)`, `[SF] float blinkInterval (0.1)`, `[SF] GameObject explosionPrefab`, `[SF] GameObject shieldVisual`, `[SF] AudioClip hitSfx`, `[SF] AudioClip deathSfx`.
-- `int CurrentLives`, `int MaxLives`, `bool HasShield`, `event Action<int> LivesChanged`.
+- `int CurrentLives`, `int MaxLives`, `bool HasShield`, `event Action<int> LivesChanged`, `event Action<bool> ShieldChanged`.
 - `TakeDamage`: bỏ qua nếu State ≠ Playing, đang bất tử, đang lướt (`PlayerMovement.IsDashing`) hoặc đã chết. Có khiên: mất khiên, bất tử 0,5 giây. Không: trừ mạng, `CameraShake.Instance?.Shake()`, nhấp nháy. Hết mạng: nổ, `SetActive(false)`, `GameManager.Instance.OnPlayerDied()`.
-- `void AddLife()` (đủ mạng thì +200 điểm), `void ActivateShield()`. `Start()` phát `LivesChanged`.
+- `void AddLife()` (đủ mạng thì +200 điểm), `void ActivateShield()`. `Start()` phát `LivesChanged` và `ShieldChanged`. Khiên đổi trạng thái phát `ShieldChanged`.
 
 **`Crosshair`** (`Scripts/Player/`, gắn trên object `Crosshair` có SpriteRenderer)
 - `[SF] PlayerAim playerAim`, `[SF] Color manualColor (trắng)`, `[SF] Color lockedColor (đỏ)`.
@@ -302,7 +303,8 @@ Ký hiệu: `[SF]` = `[SerializeField] private`. Số trong ngoặc là mặc đ
 
 **`PlayerPowerUps`** (`Scripts/Player/`)
 - `[SF] float effectDuration (8)`.
-- `void Apply(PowerUpType type)`: TripleShot → `PlayerShooting.SetTripleShot` có hẹn giờ; Shield → `PlayerHealth.ActivateShield()`; ExtraLife → `PlayerHealth.AddLife()`. Nhặt lại TripleShot khi đang có thì làm mới thời gian.
+- `event Action<float> TripleShotStarted`, `event Action TripleShotEnded`.
+- `void Apply(PowerUpType type)`: TripleShot → `PlayerShooting.SetTripleShot` có hẹn giờ, phát `TripleShotStarted`; Shield → `PlayerHealth.ActivateShield()`; ExtraLife → `PlayerHealth.AddLife()`. Nhặt lại TripleShot khi đang có thì làm mới thời gian. Hết giờ phát `TripleShotEnded`.
 
 ### M6 – Sinh đối tượng (`Scripts/Spawning/`)
 
@@ -319,9 +321,18 @@ Ký hiệu: `[SF]` = `[SerializeField] private`. Số trong ngoặc là mặc đ
 
 ### M7 – Giao diện (`Scripts/UI/`)
 
+**`SpriteNumberDisplay`**
+- `[SF] Image[] digitSlots`, `[SF] Sprite[] digitSprites` (đúng 10 phần tử, chỉ số 0..9).
+- `void SetValue(int value)`: giá trị âm thành 0; lớn hơn 10^slots - 1 thì kẹp; hiển thị có số 0 đứng đầu; gán sprite cho từng Image slot.
+
+**`ActiveEffectsHUD`**
+- `[SF] PlayerPowerUps playerPowerUps`, `[SF] PlayerHealth playerHealth`, `[SF] GameObject tripleShotSlot`, `[SF] Image tripleShotFill`, `[SF] GameObject shieldSlot`.
+- `Start()`: đăng ký `TripleShotStarted`, `TripleShotEnded`, `ShieldChanged`; ẩn 2 slot; nếu có khiên thì bật `shieldSlot`. `OnDestroy()`: hủy đăng ký.
+- `Update()`: khi TripleShot đang active thì trừ thời gian nội bộ, cập nhật `tripleShotFill.fillAmount`, hết giờ hoặc nhận `TripleShotEnded` thì ẩn slot. Khiên bật/tắt theo `ShieldChanged`.
+
 **`HUDController`**
-- `[SF] TMP_Text scoreText`, `[SF] TMP_Text timerText`, `[SF] TMP_Text killsText`, `[SF] TMP_Text aimModeText`, `[SF] Image dashCooldownFill`, `[SF] Image[] lifeIcons`, `[SF] PlayerHealth playerHealth`, `[SF] PlayerAim playerAim`, `[SF] PlayerMovement playerMovement`.
-- Đăng ký event trong `Start()`, hủy trong `OnDestroy()`. `aimModeText`: "NGẮM: CHUỘT [Q]" hoặc "NGẮM: TỰ ĐỘNG [Q]". `Update()`: `dashCooldownFill.fillAmount = 1 - DashCooldownNormalized`.
+- `[SF] SpriteNumberDisplay scoreDisplay`, `[SF] SpriteNumberDisplay killsDisplay`, `[SF] SpriteNumberDisplay minutesDisplay`, `[SF] SpriteNumberDisplay secondsDisplay`, `[SF] TMP_Text aimModeText`, `[SF] Image dashCooldownFill`, `[SF] Image autoAimCooldownFill`, `[SF] Image[] lifeIcons`, `[SF] Sprite fullHeartSprite`, `[SF] Sprite emptyHeartSprite`, `[SF] PlayerHealth playerHealth`, `[SF] PlayerAim playerAim`, `[SF] PlayerMovement playerMovement`.
+- Đăng ký event trong `Start()`, hủy trong `OnDestroy()`. `OnLivesChanged`: icon `i` đổi sprite thành `fullHeartSprite` nếu `i < lives`, ngược lại `emptyHeartSprite`. `OnTimeChanged`: tính `seconds / 60` và `seconds % 60` gán vào `minutesDisplay` và `secondsDisplay`. `aimModeText`: "NGẮM: CHUỘT [Q]" hoặc "NGẮM: TỰ ĐỘNG [Q]". `Update()`: cập nhật thanh hồi chiêu lướt (`1 - DashCooldownNormalized`) và tự ngắm (Q).
 
 **`GameUI`**
 - `[SF] GameObject pausePanel`, `[SF] GameObject gameOverPanel`, `[SF] GameObject victoryPanel`, `[SF] TMP_Text gameOverScoreText`, `[SF] TMP_Text victoryScoreText`, `[SF] GameObject gameOverNewRecordLabel`, `[SF] GameObject victoryNewRecordLabel`.

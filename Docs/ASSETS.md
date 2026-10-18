@@ -101,14 +101,17 @@ Mọi ảnh nền đều 320x320 px. Các file này đang để Sprite Mode = **
 ## UI
 Cả 23 sprite nằm trong `Assets/Art/ShmupPack/UI_sprites-0001.png` (128x128).
 
-| Mục đích | Đường dẫn file | Ghi chú |
-|---|---|---|
-| Icon mạng (HP) | `Assets/Art/ShmupPack/UI_sprites-0001.png`, sprite `UI_sprites-0001_15` (trái tim đỏ, 15x13) | Hình trái tim, `_16` là trái tim/ngọc xanh cùng cỡ (cần người dùng xác nhận) |
-| Icon điểm | `Assets/Art/ShmupPack/UI_sprites-0001.png`, sprite `UI_sprites-0001_16` (15x13, hình ngọc xanh) | Bộ asset không có icon điểm rõ ràng. Có thể dùng chữ "SCORE" của TMP thay thế (cần người dùng xác nhận) |
-| Icon đồng hồ | `Assets/Art/ShmupPack/UI_sprites-0001.png`, sprite `UI_sprites-0001_17` (16x16) | Hình tròn giống đồng hồ (cần người dùng xác nhận) |
-| Icon kills | `Assets/Art/ShmupPack/UI_sprites-0001.png`, sprite `UI_sprites-0001_18` (12x16, hình đầu lâu) | Hợp ý nghĩa số kẻ địch bị hạ (cần người dùng xác nhận) |
-
-> Sprite UI khác trong file (chưa gán, dùng khi cần): `_0` và `_2` (hai thanh ngang 75x23, kiểu thanh máu / thanh tiêu đề), `_4`–`_13` (10 chữ số pixel 6x6, có thể thứ tự "1234567890", cần người dùng xác nhận), `_20` và `_21` (thanh dọc 8x24, có thể dùng làm thanh hồi chiêu Dash), `_1`, `_3`, `_14`, `_19`, `_22` (5 icon tròn 24x24, giống các icon trong `Bonuses-0001.png`).
+| Mục đích | Tên sprite | Kích thước | Ghi chú |
+|---|---|---|---|
+| Icon tim đầy (HP) | `UI_sprites-0001_15` | 15x13 | Trái tim đỏ viền kim cương |
+| Icon tim rỗng (HP) | `UI_sprites-0001_16` | 15x13 | Trái tim xám (mất máu; KHÔNG phải ngọc xanh) |
+| Icon đồng hồ | `UI_sprites-0001_17` | 16x16 | Hình tròn đồng hồ |
+| Icon kills | `UI_sprites-0001_18` | 12x16 | Hình đầu lâu |
+| Thanh nhãn SCORE | `UI_sprites-0001_0` | 75x23 | Thanh ngang có sẵn chữ "SCORE" |
+| Thanh nhãn trống | `UI_sprites-0001_2` | 75x23 | Thanh ngang trống không chữ |
+| Chữ số 0..9 | `_13` (0), `_4` (1), `_5` (2), `_6` (3), `_7` (4), `_8` (5), `_9` (6), `_10` (7), `_11` (8), `_12` (9) | 6x6 | 10 chữ số pixel, sắp xếp: 1..9 là `_4`..`_12`, số 0 là `_13`. **Lưu ý: sprite sheet không có ký tự ':'** |
+| Thanh thời lượng dọc | Ruột: `UI_sprites-0001_20`<br>Khung: `UI_sprites-0001_21` | 8x24 | Ruột dải màu chuyển sắc xanh/vàng/đỏ; Khung xám ngoài |
+| Icon vật phẩm tròn | `UI_sprites-0001_1` (+ xanh lá, ExtraLife)<br>`UI_sprites-0001_3` (khiên xanh dương, Shield)<br>`UI_sprites-0001_14` (sao đỏ)<br>`UI_sprites-0001_19` (cầu lửa cam, TripleShot)<br>`UI_sprites-0001_22` ("2x" hồng) | 24x24 | Các icon tròn hiển thị trạng thái vật phẩm đang dùng trên HUD |
 
 ## Audio
 Toàn bộ âm thanh `.ogg` (bộ Kenney Sci-fi Sounds, CC0, theo tên file) nằm ở `Assets/Audio/`, mỗi nhóm có nhiều biến thể `_000`, `_001`, ... Có thể dùng nhiều biến thể trong một danh sách để tránh lặp.

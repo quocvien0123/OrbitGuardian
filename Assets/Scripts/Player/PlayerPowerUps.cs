@@ -10,6 +10,9 @@ public class PlayerPowerUps : MonoBehaviour
     private PlayerHealth health;
     private float tripleShotRemaining;
 
+    public event System.Action<float> TripleShotStarted;
+    public event System.Action TripleShotEnded;
+
     private void Awake()
     {
         shooting = GetComponent<PlayerShooting>();
@@ -31,8 +34,11 @@ public class PlayerPowerUps : MonoBehaviour
         if (tripleShotRemaining <= 0f) return;
 
         tripleShotRemaining -= Time.deltaTime;
-        if (tripleShotRemaining <= 0f && shooting != null)
-            shooting.SetTripleShot(false);
+        if (tripleShotRemaining <= 0f)
+        {
+            if (shooting != null) shooting.SetTripleShot(false);
+            TripleShotEnded?.Invoke();
+        }
     }
 
     /// <summary>Áp dụng vật phẩm. Nhặt lại Triple Shot khi đang có hiệu lực thì làm mới thời gian.</summary>
@@ -43,6 +49,7 @@ public class PlayerPowerUps : MonoBehaviour
             case PowerUpType.TripleShot:
                 tripleShotRemaining = effectDuration;
                 if (shooting != null) shooting.SetTripleShot(true);
+                TripleShotStarted?.Invoke(effectDuration);
                 break;
             case PowerUpType.Shield:
                 if (health != null) health.ActivateShield();

@@ -2,17 +2,34 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>HUD trong màn chơi: điểm, đồng hồ, kills, mạng, chế độ ngắm, thanh hồi chiêu lướt.</summary>
+/// <summary>HUD trong màn chơi: điểm, đồng hồ, kills, mạng (tim đầy/rỗng), chế độ ngắm, thanh hồi chiêu lướt & tự ngắm.</summary>
 public class HUDController : MonoBehaviour
 {
-    [SerializeField] private TMP_Text scoreText;
-    [SerializeField] private TMP_Text timerText;
-    [SerializeField] private TMP_Text killsText;
+    [Tooltip("Hiển thị chữ số sprite cho điểm số")]
+    [SerializeField] private SpriteNumberDisplay scoreDisplay;
+
+    [Tooltip("Hiển thị chữ số sprite cho số hạ gục")]
+    [SerializeField] private SpriteNumberDisplay killsDisplay;
+
+    [Tooltip("Hiển thị chữ số sprite cho số phút")]
+    [SerializeField] private SpriteNumberDisplay minutesDisplay;
+
+    [Tooltip("Hiển thị chữ số sprite cho số giây")]
+    [SerializeField] private SpriteNumberDisplay secondsDisplay;
+
     [SerializeField] private TMP_Text aimModeText;
     [SerializeField] private Image dashCooldownFill;
     [SerializeField] private Image autoAimCooldownFill;
+
     [Tooltip("Icon mạng, theo thứ tự từ trái sang phải")]
     [SerializeField] private Image[] lifeIcons;
+
+    [Tooltip("Sprite trái tim đầy máu")]
+    [SerializeField] private Sprite fullHeartSprite;
+
+    [Tooltip("Sprite trái tim rỗng (mất máu)")]
+    [SerializeField] private Sprite emptyHeartSprite;
+
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private PlayerAim playerAim;
     [SerializeField] private PlayerMovement playerMovement;
@@ -91,22 +108,22 @@ public class HUDController : MonoBehaviour
 
     private void OnScoreChanged(int score)
     {
-        if (scoreText != null) scoreText.text = "SCORE: " + score;
+        if (scoreDisplay != null) scoreDisplay.SetValue(score);
     }
 
     private void OnKillsChanged(int kills)
     {
-        if (killsText != null) killsText.text = "KILLS: " + kills;
+        if (killsDisplay != null) killsDisplay.SetValue(kills);
     }
 
-    /// <summary>Hiển thị mm:ss, làm tròn lên; chỉ cập nhật chữ khi số giây đổi.</summary>
+    /// <summary>Hiển thị mm và ss, làm tròn lên; chỉ cập nhật khi số giây đổi.</summary>
     private void OnTimeChanged(float remaining)
     {
         int seconds = Mathf.CeilToInt(remaining);
         if (seconds == lastShownSeconds) return;
         lastShownSeconds = seconds;
-        if (timerText != null)
-            timerText.text = string.Format("{0:00}:{1:00}", seconds / 60, seconds % 60);
+        if (minutesDisplay != null) minutesDisplay.SetValue(seconds / 60);
+        if (secondsDisplay != null) secondsDisplay.SetValue(seconds % 60);
     }
 
     private void OnLivesChanged(int lives)
@@ -114,7 +131,10 @@ public class HUDController : MonoBehaviour
         if (lifeIcons == null) return;
         for (int i = 0; i < lifeIcons.Length; i++)
         {
-            if (lifeIcons[i] != null) lifeIcons[i].enabled = i < lives;
+            if (lifeIcons[i] == null) continue;
+            lifeIcons[i].enabled = true;
+            Sprite targetSprite = (i < lives) ? fullHeartSprite : emptyHeartSprite;
+            if (targetSprite != null) lifeIcons[i].sprite = targetSprite;
         }
     }
 

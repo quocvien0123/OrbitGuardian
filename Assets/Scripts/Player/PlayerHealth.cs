@@ -26,6 +26,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public bool HasShield { get; private set; }
 
     public event Action<int> LivesChanged;
+    public event Action<bool> ShieldChanged;
 
     private PlayerMovement movement;
     private SpriteRenderer spriteRenderer;
@@ -126,6 +127,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     private void UpdateShieldVisual()
     {
         if (shieldVisual != null) shieldVisual.SetActive(HasShield);
+        ShieldChanged?.Invoke(HasShield);
     }
 
     /// <summary>Bất tử thêm duration giây (không rút ngắn thời gian bất tử đang có) và nhấp nháy.</summary>

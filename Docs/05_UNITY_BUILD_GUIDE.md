@@ -294,30 +294,36 @@ Mẹo test nhanh: tạm đặt **Survive Duration = 40** và Unlock Time Mine/Gu
 3. `EventSystem` có cảnh báo Input Module: bấm **Replace with InputSystemUIInputModule**.
 4. Lần đầu tạo chữ TMP: **Import TMP Essentials**.
 
-### M7.2 HUD
+### M7.2 HUD (Thiết kế Sprite M7b)
 1. Trong Canvas: Create Empty `HUD`, anchor **stretch-stretch** (giữ Alt khi chọn preset).
-2. Chữ (**UI > Text - TextMeshPro**) trong `HUD`:
-
-| Tên | Anchor | Nội dung mẫu | Gợi ý |
-|---|---|---|---|
-| `ScoreText` | trên trái | `0` | Font 48 |
-| `TimerText` | trên giữa | `03:00` | Font 60 |
-| `KillsText` | trên phải | `0` | Font 48, căn phải |
-| `AimModeText` | dưới trái | `NGẮM: CHUỘT [Q]` | Font 32 |
-
-3. **Mạng:** Create Empty `Lives` (anchor trên trái, dưới ScoreText) + **Horizontal Layout Group**; bên trong 3 **UI > Image** = icon HP, Preserve Aspect, `56 x 56`.
-4. **Thanh hồi chiêu lướt** (dưới trái, trên AimModeText):
-   - **UI > Image** tên `DashBarBG`, kích thước `300 x 20`, màu xám tối.
-   - Bên trong tạo **UI > Image** tên `DashBarFill`, anchor stretch-stretch, màu xanh lơ. **Source Image** chọn sprite bất kỳ (ví dụ *UISprite* hoặc Square), **Image Type = Filled**, **Fill Method = Horizontal**, **Fill Origin = Left**.
-   - Thêm chữ nhỏ "LƯỚT [Shift]" cạnh thanh.
-5. `HUD` > Add `HUDController`, gán:
-
-| Ô | Kéo vào |
-|---|---|
-| Score / Timer / Kills / Aim Mode Text | các chữ tương ứng |
-| Dash Cooldown Fill | `DashBarFill` |
-| Life Icons | 3 Image trong `Lives` |
-| Player Health / Player Aim / Player Movement | object `Player` (kéo 3 lần) |
+2. **Khu vực hiển thị sprite (UI_sprites-0001, tỷ lệ 1 sprite px = 4 canvas px):**
+   - **Mạng (Lives):** Anchor Top-Left `(0, 1)`, AnchoredPosition `(32, -32)`. Horizontal Layout Group (Spacing 8). Chứa 3 Image `Life_0`, `Life_1`, `Life_2` kích thước `60 x 52`, Preserve Aspect, Raycast Target tắt, mặc định sprite `UI_sprites-0001_15`.
+   - **Score:** Anchor Top-Left `(0, 1)`, AnchoredPosition `(32, -92)`, Image `ScoreBar` kích thước `300 x 92` (sprite `UI_sprites-0001_0`). Con `ScoreDigits` (AnchoredPosition `(132, -14)`) chứa 7 Image chữ số `24 x 24` (Spacing 4) gắn `SpriteNumberDisplay` (10 sprite `0=_13`, `1..9=_4.._12`).
+   - **TopRightGroup:** Anchor Top-Right `(1, 1)`, AnchoredPosition `(-32, -32)`.
+     - **TimerRow (Hàng 1):** Image đồng hồ `64 x 64` (`_17`), cụm phút `MinutesDigits` (2 slot `SpriteNumberDisplay`), dấu hai chấm `Colon` (2 chấm vuông `6 x 6` cách nhau 12px), cụm giây `SecondsDigits` (2 slot `SpriteNumberDisplay`).
+     - **KillsRow (Hàng 2, y = -80):** Image đầu lâu `48 x 64` (`_18`), cụm hạ gục `KillsDigits` (3 slot `SpriteNumberDisplay`).
+   - **ActiveEffects (Dưới-Trái):** Anchor Bottom-Left `(0, 0)`, AnchoredPosition `(50, 85)`. Horizontal Layout Group (Spacing 16).
+     - `TripleShotSlot`: icon `72 x 72` (`_19`) + thanh dọc `TripleShotBar` nền `24 x 72` (`_21`) chứa ruột `TripleShotFill` (`_20`, Filled Vertical Bottom). Tắt active.
+     - `ShieldSlot`: icon `72 x 72` (`_3`). Tắt active.
+     - Gắn component `ActiveEffectsHUD`.
+   - **Thanh Cooldown:** `DashBarBG` và `AutoAimBarBG` (kèm `DashLabel`, `AutoAimLabel`).
+3. **Gán tham chiếu trên `HUDController`:**
+   - **Score Display**: `ScoreDigits`
+   - **Kills Display**: `KillsDigits`
+   - **Minutes Display**: `MinutesDigits`
+   - **Seconds Display**: `SecondsDigits`
+   - **Full Heart Sprite**: `UI_sprites-0001_15`
+   - **Empty Heart Sprite**: `UI_sprites-0001_16`
+   - **Life Icons**: `[Life_0, Life_1, Life_2]`
+   - **Dash Cooldown Fill**: `DashBarFill`
+   - **Auto Aim Cooldown Fill**: `AutoAimBarFill`
+   - **Player Health / Aim / Movement**: object `Player` (kéo 3 lần).
+4. **Gán tham chiếu trên `ActiveEffectsHUD`:**
+   - **Player Power Ups**: object `Player`
+   - **Player Health**: object `Player`
+   - **Triple Shot Slot**: `TripleShotSlot`
+   - **Triple Shot Fill**: `TripleShotFill`
+   - **Shield Slot**: `ShieldSlot`
 
 ### M7.3 Ba panel
 Mỗi panel: **UI > Panel**, màu đen Alpha ~180, thêm **Vertical Layout Group** (Middle Center, Spacing 30).
@@ -355,8 +361,14 @@ Nút (**UI > Button - TextMeshPro**) khoảng `400 x 100`. **Bỏ tích** cả 3
 **File > Build Profiles** (bản cũ: *Build Settings*) > **Scene List**: `MainMenu` index **0**, `Game` index **1**.
 
 ### M7 – Test (Play từ MainMenu)
-- [ ] Menu: kỷ lục, Credits, Chơi.
-- [ ] HUD: điểm, đồng hồ, kills, mạng cập nhật đúng; bấm Q đổi chữ chế độ ngắm; lướt thì thanh tụt về 0 rồi đầy lại.
+- [ ] Menu: kỷ lục, Credits, Chơi chuyển scene sang Game.
+- [ ] HUD Sprite: 
+  - Mạng: 3 tim đỏ `UI_sprites-0001_15`. Khi mất máu chuyển thành tim xám `UI_sprites-0001_16`.
+  - Điểm số: 7 chữ số đệm số 0 ("0000000") tăng dần khi diệt địch/thiên thạch.
+  - Đồng hồ: định dạng mm:ss ("03:00") đếm ngược chính xác qua 2 cụm phút/giây.
+  - Kills: 3 chữ số ("000") tăng khi hạ địch.
+  - Kích hoạt vật phẩm: Nhặt Triple Shot hiện icon và thanh rút dần; nhặt Khiên hiện icon khiên; hết hiệu lực tự ẩn.
+  - Thanh hồi chiêu Dash (xanh lơ) và Auto-Aim (vàng) cập nhật mượt.
 - [ ] Esc → PausePanel, có con trỏ chuột, Tiếp tục hoạt động.
 - [ ] Thua / thắng (tạm giảm Survive Duration): panel đúng, điểm đúng, "KỶ LỤC MỚI!" khi phá kỷ lục. **Trả về 180.**
 - [ ] Ctrl+S cả 2 scene. Commit: `M7 giao dien`.
