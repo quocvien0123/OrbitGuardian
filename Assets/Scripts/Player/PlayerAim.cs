@@ -12,10 +12,24 @@ public class PlayerAim : MonoBehaviour
     [Tooltip("Khoảng thời gian giữa 2 lần tìm lại mục tiêu (giây)")]
     [SerializeField] private float retargetInterval = 0.1f;
     [SerializeField] private bool startWithAutoAim = false;
+    [Tooltip("Thời gian duy trì tự ngắm (giây)")]
+    [SerializeField] private float autoAimDuration = 5f;
+    [Tooltip("Thời gian hồi chiêu sau khi hết tự ngắm (giây)")]
+    [SerializeField] private float autoAimCooldown = 5f;
+    [Tooltip("Âm thanh khi kích hoạt tự ngắm")]
     [SerializeField] private AudioClip toggleSfx;
+    [Tooltip("Âm thanh khi kết thúc tự ngắm")]
+    [SerializeField] private AudioClip deactivateSfx;
+    [Range(0f, 1f)]
+    [Tooltip("Âm lượng âm thanh tự ngắm (0 = tắt, 1 = tối đa)")]
+    [SerializeField] private float toggleVolume = 0.4f;
 
     public bool IsAutoAim { get; private set; }
     public Targetable CurrentTarget { get; private set; }
+    public float AutoAimDurationRemaining => durationTimer;
+    public float AutoAimCooldownRemaining => cooldownTimer;
+    /// <summary>1 = vừa hết tự ngắm (bắt đầu hồi chiêu), 0 = sẵn sàng.</summary>
+    public float AutoAimCooldownNormalized => autoAimCooldown > 0f ? Mathf.Clamp01(cooldownTimer / autoAimCooldown) : 0f;
 
     /// <summary>Hướng mũi tàu hiện tại (transform.up). Dùng hướng đã xoay mượt để camera không giật.</summary>
     public Vector2 AimDirection => transform.up;
@@ -42,6 +56,8 @@ public class PlayerAim : MonoBehaviour
 
     private Camera cam;
     private float retargetTimer;
+    private float durationTimer;
+    private float cooldownTimer;
 
     private void Awake()
     {
@@ -59,27 +75,61 @@ public class PlayerAim : MonoBehaviour
     {
         CurrentTarget = null;
         retargetTimer = 0f;
+        durationTimer = 0f;
+        cooldownTimer = 0f;
+        IsAutoAim = false;
     }
 
     private void Update()
     {
         if (GameManager.Instance == null || GameManager.Instance.State != GameState.Playing) return;
 
+        // Đếm hồi chiêu
+        if (cooldownTimer > 0f)
+            cooldownTimer -= Time.deltaTime;
+
+        // Đếm thời gian hiệu lực của tự ngắm
+        if (IsAutoAim)
+        {
+            durationTimer -= Time.deltaTime;
+            if (durationTimer <= 0f)
+            {
+                DeactivateAutoAim();
+            }
+        }
+
         Keyboard kb = Keyboard.current;
         if (kb != null && kb.qKey.wasPressedThisFrame)
-            ToggleAutoAim();
+        {
+            // Chỉ kích hoạt khi chưa bật và đã hết hồi chiêu
+            if (!IsAutoAim && cooldownTimer <= 0f)
+            {
+                ActivateAutoAim();
+            }
+        }
 
         UpdateTarget();
         RotateTowardsAimPoint();
     }
 
-    private void ToggleAutoAim()
+    private void ActivateAutoAim()
     {
-        IsAutoAim = !IsAutoAim;
+        IsAutoAim = true;
+        durationTimer = autoAimDuration;
         CurrentTarget = null;
-        retargetTimer = 0f; // tìm mục tiêu ngay frame này
-        AudioManager.PlaySfx(toggleSfx);
-        AimModeChanged?.Invoke(IsAutoAim);
+        retargetTimer = 0f;
+        AudioManager.PlaySfx(toggleSfx, toggleVolume);
+        AimModeChanged?.Invoke(true);
+    }
+
+    private void DeactivateAutoAim()
+    {
+        IsAutoAim = false;
+        CurrentTarget = null;
+        durationTimer = 0f;
+        cooldownTimer = autoAimCooldown;
+        AudioManager.PlaySfx(deactivateSfx, toggleVolume);
+        AimModeChanged?.Invoke(false);
     }
 
     private void UpdateTarget()

@@ -48,3 +48,10 @@
 3. Kiểm tra tab **Problems**, sửa hết lỗi biên dịch.
 4. Tự đối chiếu: tên class, field, method có khớp đặc tả không.
 5. Báo cáo: danh sách file đã tạo hoặc sửa; những gì cần làm trong Unity (trỏ tới mục trong `05_UNITY_BUILD_GUIDE.md`); cách test nhanh.
+- Ưu tiên dùng tool chuyên dụng (gameobject-*, gameobject-component-*, assets-prefab-*).
+ - Chỉ dùng script-execute hoặc reflection-method-call khi không có tool chuyên dụng
+ (ví dụ: tạo ScriptableObject asset, cài import sprite, gán On Click, Build Profiles).
+ Trước khi chạy: hiển thị đoạn code cho người dùng xem và CHỜ đồng ý.
+ - Không dùng script-execute để sửa Tags and Layers, Sorting Layers, Physics 2D
+ Collision Matrix. Những việc này người dùng tự làm (05 Phần 0).
+
