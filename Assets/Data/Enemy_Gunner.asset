@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d72507ec037499a4b91ba3228b1f8141, type: 3}
+  m_Name: Enemy_Gunner
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyData
+  maxHealth: 4
+  moveSpeed: 3
+  scoreValue: 40
+  dropChance: 0.15
+  pattern: 1
+  aimSpread: 10
+  preferredDistance: 6
+  orbitSpeed: 40
+  stayDuration: 10
+  fireInterval: 1.4
+  bulletPrefab: {fileID: 3203837530182028629, guid: c67c732948bd0404d986d777a7108a4e, type: 3}
+  dashDelay: 0.8
+  dashSpeed: 7
+  turnSpeed: 120
